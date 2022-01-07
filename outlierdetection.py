@@ -7,23 +7,13 @@ import shutil
 import scipy.stats as stats
 
 
-def geturlhash():
-    with open("./hashes.json") as data_file:
-        data = json.load(data_file)
-    return data
-
 def findfile():
-    # data = geturlhash()
     filelist = []
     for root, dirs, files in os.walk("./alltraces"):
         for file in files:
             # path = os.path.join(root, file)
             filelist.append(file)
-            # filehash = file[13:]
-            # for key, url in data.items():
-            #     if key == filehash:
-            #         furl = url
-                    # print(url)
+
     return filelist
 
 def create_of(ftype, furlhash, refhash, newapproach):
@@ -32,13 +22,24 @@ def create_of(ftype, furlhash, refhash, newapproach):
         ctrace = []
         ctempo = []
         clines = tf.read()
-        for i, cpart in enumerate(clines.split('https')):  # split traces from merged trace file
-            cline = cpart.split()
-            ctempo.append(cline)
-
-        for cstring in ctempo:  # remove empty entities
-            if len(cstring) > 4:  # due to spliting, empty entities can appear
-                ctrace.append(cstring)
+        if 'URL' in clines:
+            for i, cpart in enumerate(clines.split('URL')):  # split traces from merged file
+                cline = cpart.split()
+                ctempo.append(cline)
+            for cstring in ctempo:
+                if len(cstring) > 4:  # remove empty entities
+                    ctrace.append(cstring)
+                else:
+                    pass
+        else:
+            for i, cpart in enumerate(clines.split('https://')):  # split traces from merged file
+                cline = cpart.split()
+                ctempo.append(cline)
+            for cstring in ctempo:
+                if len(cstring) > 4:  # remove empty entities
+                    ctrace.append(cstring)
+                else:
+                    pass
         xurlregex = re.compile('www.')
         xstartregex = re.compile('START')
         xtimeregex = re.compile('TIMESTAMP')  # target of removal from trace
@@ -46,20 +47,15 @@ def create_of(ftype, furlhash, refhash, newapproach):
         xfalschregex = re.compile('StartTime')
 
         for k in range(len(ctrace)):
-            # print('Reading ' + str(k + 1) + 'th trace in the file...')  # k+1: understandable for human
             cnewtrace = []
-
             for xitem in ctrace[k]:
                 xurlgrep = xurlregex.search(xitem)
                 xstartgrep = xstartregex.search(xitem)
                 xtimegrep = xtimeregex.search(xitem)
                 xdelimgrep = xdelimregex.search(xitem)
                 xfalschgrep = xfalschregex.search(xitem)
-                if xurlgrep or xstartgrep or xtimegrep or xdelimgrep:  # pass the line including url, START TIMESTAMP\n
+                if xurlgrep or xstartgrep or xtimegrep or xfalschgrep or xdelimgrep:  # pass the line including url, START TIMESTAMP\n
                     pass
-                elif xfalschgrep:           # how to ignore {StartTime}?
-                    print('Invalid trace. ')
-                    continue
                 else:
                     cnewtrace.append(xitem)
         if len(ctrace) == len(newapproach):
@@ -196,7 +192,7 @@ def ref(userchoice, min, approach):
                 tempo = []
                 print(rf'Reading our reference trace : all{reference}traces_{refhash}...'+'\n')
                 lines = f.read()
-                for i, part in enumerate(lines.split('URL')):   # split traces from merged trace file
+                for i, part in enumerate(lines.split('URL :')):   # split traces from merged trace file
                     line = part.split()
                     tempo.append(line)
 
@@ -223,30 +219,40 @@ def ref(userchoice, min, approach):
                         timegrep = timeregex.search(item)
                         falschgrep = falschregex.search(item)
                         delimgrep = delimregex.search(item)
-                        if urlgrep or startgrep or timegrep or delimgrep:   # pass the line including url, START TIMESTAMP\n
+                        if urlgrep or startgrep or timegrep or falschgrep or delimgrep:   # pass the line including url, START TIMESTAMP\n
                             pass
-                        elif falschgrep:
-                            print('Invalid trace. ')
-                            continue
                         else:
                             newtrace.append(item)
                     for j in range(len(newtrace)):
                         if 'Timestamp' in newtrace[j]:  # start of the line for each packet
-                            pkt += 1  # count the number of packets(whatever destination is)
+                            pkt += 1  # count the total number of packets(whatever destination is)
                         if 'INCOMING' and 'Source' in newtrace[j]:
-                            size = str(newtrace[j + 5]).split(':')[1].strip(',')
-                            if 'Timestamp' in size:  # after spliting with ':', size can include 'Timestamp'
-                                size = size[:-9]  # remove string, leave only int
+                            size = str(newtrace[j + 5]).strip(',')
+                            if 'size' in size and 'Timestamp' in size:  # XXXTimestamp
+                                size = size.split(':')[1][:-9]
+                                totalsize += int(size)
+                            elif 'URL' in size:                 # XXXURL
+                                size = size.split(':')[1][:-3]
+                                totalsize += int(size)
+                            elif 'size' in size:                # size:XXX, or size:XXX
+                                size = size.split(':')[1]
                                 totalsize += int(size)
                             else:
-                                totalsize += int(size)
+                                pass                            # sometimes it grabs timestamps
+
                         elif 'INCOMING' in newtrace[j] and 'Source' not in newtrace[j]:
-                            size = str(newtrace[j + 6]).split(':')[1].strip(',')
-                            if 'Timestamp' in size:  # after spliting with ':', size can include 'Timestamp'
-                                size = size[:-9]  # remove string, leave only int
+                            size = str(newtrace[j + 6]).strip(',')
+                            if 'Timestamp' in size:
+                                size = size.split(':')[1][:-9]
+                                totalsize += int(size)
+                            elif 'URL' in size:
+                                size = size.split(':')[1][:-3]
+                                totalsize += int(size)
+                            elif 'size' in size:
+                                size = size.split(':')[1]
                                 totalsize += int(size)
                             else:
-                                totalsize += int(size)
+                                pass
 
                     print('\tThe sum of INCOMING packet sizes: ' + str(totalsize))
                     sumlist.append(totalsize)           # Whether the trace is valid or not, just get sum of incoming packet sizes
@@ -369,9 +375,9 @@ if __name__ == '__main__':
             min = input("The number of minimum traces? ")
             if int(min) <= 15 and int(min) >= 1:
                 print("""Do you need to remove more outliers?\n
-            1. First approach
-            2. Second approach 
-            3. Third approach
+            1. First approach: Using Median
+            2. Second approach: Using Quartiles
+            3. Third approach: Using Z Score
             4. No more removal \n""")
                 approach = input("Please insert 1~4 : ")
                 ref('TCP', min, approach)
@@ -383,9 +389,9 @@ if __name__ == '__main__':
             min = input("The number of minimum traces? ")
             if int(min) <= 15 and int(min) >= 1:
                 print("""Do you need to remove more outliers?\n
-            1. First approach
-            2. Second approach 
-            3. Third approach
+            1. First approach: Using Median
+            2. Second approach: Using Quartiles
+            3. Third approach: Using Z Score
             4. No more removal \n""")
                 approach = input("Please insert 1~4 : ")
                 ref('TLS', min, approach)
@@ -397,9 +403,9 @@ if __name__ == '__main__':
             min = input("The number of minimum traces? ")
             if int(min) <= 15 and int(min) >= 1:
                 print("""Do you need to remove more outliers?\n
-            1. First approach
-            2. Second approach 
-            3. Third approach
+            1. First approach: Using Median
+            2. Second approach: Using Quartiles
+            3. Third approach: Using Z Score
             4. No more removal \n""")
                 approach = input("Please insert 1~4 : ")
                 ref('TOR', min, approach)
