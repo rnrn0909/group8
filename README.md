@@ -9,13 +9,13 @@
 - Options for toolbox:
 ```
 [VALID KEYWORD]
-    pages -> Collect pages from a randomly selected trend
-    visit -> Visit URLs collected in Firefox through TOR
-    dictionary -> Generate JSON mapping  of URL-hash for troubleshooting
-    database -> Loads the database with the selected countries for the experiment
-    extraction -> Extraction of data at different layers
-    automatic -> Automatic visit of pages ans extraction of TCP and TLS traces for these pages loads without any manual interaction
-    merging -> Merging of already existing TCP/TLS/TOR  cell traces collected for a given URL in a single file
+    pages : Collect pages from a randomly selected trend
+    visit : Visit URLs collected in Firefox through TOR
+    dictionary : Generate JSON mapping  of URL-hash for troubleshooting
+    database : Loads the database with the selected countries for the experiment
+    extraction : Extraction of data at different layers
+    automatic : Automatic visit of pages ans extraction of TCP and TLS traces for these pages loads without any manual interaction
+    merging : Merging of already existing TCP/TLS/TOR  cell traces collected for a given URL in a single file
 ```
 
 # Util
@@ -34,8 +34,8 @@
 - Expand the toolbox
 ```
 [VALID KEYWORD]
-    outliers -> Detect and remove outliers
-    features -> Extract features from traffic traces
+    outlier : Detect and remove outliers
+    feature : Extract features from traffic traces
 ```
 # Util
 - [pandas]
