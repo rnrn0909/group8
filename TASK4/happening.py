@@ -146,8 +146,8 @@ class visitclass:
                     print("not able to kill")
 
                 # ---- EXPORT THE FAILED TO LOAD SUBPAGES TO FILE
-                print("The following urls didn't load correctly")
-                print(self.failedtoloadTimeout)
+                # print("The following urls didn't load correctly")
+                # print(self.failedtoloadTimeout)
                 with open(rf'./LOGS/{domain}/timedoutpages.txt', 'w') as filehandle:
                     for url in self.failedtoloadTimeout:
                         filehandle.write('%s\n' % url)
@@ -159,7 +159,7 @@ class visitclass:
                 # print(self.RedirectionList)
                 # print("The following urls had empty pages: ")
                 # print(self.EmptyList)
-
+                # all work well but commented for smooth work of outlierdetection.py
                 ### code to add rediectin +error +empty + failed to load and make it a set to remove duplicated
                 notSuccessful = (
                     set().union(self.ErrorsList, self.RedirectionList, self.EmptyList, self.failedtoloadTimeout))
