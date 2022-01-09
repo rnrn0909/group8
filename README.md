@@ -44,3 +44,7 @@
 - [shutil]
 - [scipy.stats]
 
+
+
+# Further requirements
+- Uploaded requirements in text file
