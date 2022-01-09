@@ -41,4 +41,6 @@
 - [pandas]
 - [statistics]
 - [numpy]
+- [shutil]
+- [scipy.stats]
 
