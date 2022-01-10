@@ -8,6 +8,7 @@ import glob
 from mysql.connector import (connection)
 import mysql.connector
 import mergetraces
+import time
 
 conn = connection.MySQLConnection(user='root', password='root', port="3306",
                                   host='127.0.0.1',
@@ -28,8 +29,6 @@ def getpageurl(urlhash):
 def cleanunzipped():
     for dirname, dirnames, filenames in os.walk('./LOGS'):
         for subdirname in dirnames:
-            print(dirname, "dirnme")
-            print(subdirname, "subdir")
             print(os.path.join(dirname, subdirname))
             path = os.path.join(dirname, subdirname)
             if subdirname == "LOGS":
@@ -101,7 +100,7 @@ def tlscollection(refhash):
                     pcapf = root + "/" + root + "/" + urlhash + rf"_pkts_{circid}.cap"
                     print("path to unzip", pcapf)
                     print("****** This work can take some minutes ******")
-
+                    print("Collecting TLS packets ... ")
                     cap = pyshark.FileCapture(rf"{pcapf}", display_filter='tls')
                     for pkt in cap:
                         try:
@@ -196,7 +195,7 @@ def tcpcollection(refhash):
                     pcapf=root+"/"+root+"/"+urlhash+rf"_pkts_{circid}.cap"
                     print("path to unzip", pcapf)
                     print("****** This work can take some minutes ******")
-
+                    print("Collecting TCP packets... ")
                     # TCP AND OUTGOING
                     cap = pyshark.FileCapture(rf"{pcapf}", display_filter='tcp')
 
@@ -285,6 +284,7 @@ def torcellcollection(refhash):
                         pcapf = root + "/" + root + "/" + urlhash + rf"_pkts_{circid}.cap"
                         print("path to unzip", pcapf)
                         print("****** This work can take some minutes ******")
+                        print("Collecting TOR Cells ... ")
                                     # TOR AND INCOMING
                         cap = pyshark.FileCapture(rf"{pcapf}", display_filter="tls")
                         for pkt in cap:
@@ -335,12 +335,13 @@ def verification():
                 print("Error: %s : %s" % (file_path, e.strerror))
 
 
-
-
 def main(chosenhash):
     torcellcollection(chosenhash)
+    time.sleep(1)
     tlscollection(chosenhash)
+    time.sleep(1)
     tcpcollection(chosenhash)
+    time.sleep(1)
     mergetraces.main(chosenhash)
 
 
@@ -348,6 +349,4 @@ if __name__ == '__main__':
     chosenhash = input('Which hash? ')
     main(chosenhash)
     conn.close()
-
-
 
