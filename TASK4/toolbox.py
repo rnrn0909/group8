@@ -15,6 +15,7 @@ def main():
         for opt in option:
             #Print the instruction how to make use of the program
             if opt == '-h' or opt == '-help':
+                print("")
                 print(" Website Fingerprinting Toolbox ".center(80, '*'))
                 print("\nUsage: toolbox.py [OPTIONS]\n")
                 print("[ OPTIONS ]\n\t-h\t\t\tPrint overview information about this toolbox")
