@@ -36,7 +36,7 @@ class visitclass:
             os.makedirs(dirNameWebsite)
             print("Directory ", dirNameWebsite, " Domain folder created in Screenshots ")
         except FileExistsError:
-            print("Directory ", dirNameWebsite, " Domain folder  already exists in Screenshots")
+            print("Directory ", dirNameWebsite, " Domain folder already exists in Screenshots")
 
         # creates folder structure for SOURCE CODE of the DOMAINS
         domain = urlparse(url).netloc
@@ -46,7 +46,7 @@ class visitclass:
             os.makedirs(dirNameWebsite)
             print("Directory ", dirNameWebsite, " Domain folder created in HTML")
         except FileExistsError:
-            print("Directory ", dirNameWebsite, " Domain folder  already exists in HTML")
+            print("Directory ", dirNameWebsite, " Domain folder already exists in HTML")
 
         # creates folder structure for LOGS  of the DOMAINS
         domain = urlparse(url).netloc
@@ -56,7 +56,7 @@ class visitclass:
             os.makedirs(dirNameWebsite)
             print("Directory ", dirNameWebsite, " Domain folder created in LOGS")
         except FileExistsError:
-            print("Directory ", dirNameWebsite, " Domain folder  already exists in LOGS")
+            print("Directory ", dirNameWebsite, " Domain folder already exists in LOGS")
         return domain
 
     def mainloadfunc(self, chosenhash, noOfTraces):
@@ -82,8 +82,8 @@ class visitclass:
         # ---- PARAMETER INPUTS
         self.flag = 0
         self.failedtoloadTimeout = []  # Initialize list of pages that didnt load
-
-        chosentimeout = input("Please enter the maximum timeout in seconds for pages to load:\n")
+        # chosentimeout = 15
+        chosentimeout = input("Please enter the maximum timeout in seconds for pages to load: ")
         # ^ give my own value? (annoying to put value everytime when executing outlierdetection)
 
         self.conn = connection.MySQLConnection(user='root', password='root', port="3306",
@@ -159,7 +159,8 @@ class visitclass:
                 # print(self.RedirectionList)
                 # print("The following urls had empty pages: ")
                 # print(self.EmptyList)
-                # all work well but commented for smooth work of outlierdetection.py
+                # # all work well but commented for smooth work of outlierdetection.py
+
                 ### code to add rediectin +error +empty + failed to load and make it a set to remove duplicated
                 notSuccessful = (
                     set().union(self.ErrorsList, self.RedirectionList, self.EmptyList, self.failedtoloadTimeout))
@@ -184,19 +185,19 @@ class visitclass:
             os.makedirs(dirName1)
             print("Directory ", dirName1, " Screenshots folder created ")
         except FileExistsError:
-            print("Directory ", dirName1, " Screenshots folder  already exists")
+            print("Directory ", dirName1, " Screenshots folder already exists")
 
         try:
             os.makedirs(dirName2)
             print("Directory ", dirName2, " HTML folder created ")
         except FileExistsError:
-            print("Directory ", dirName2, " HTML folder  already exists")
+            print("Directory ", dirName2, " HTML folder already exists")
 
         try:
             os.makedirs(dirName3)
             print("Directory ", dirName3, " LOGS folder created ")
         except FileExistsError:
-            print("Directory ", dirName3, " LOGS folder  already exists")
+            print("Directory ", dirName3, " LOGS folder already exists")
 
         # ---------------------------------------- END FOLDER CREATION----
 
@@ -206,7 +207,7 @@ class visitclass:
             os.makedirs(dirName4)
             print("Directory ", dirName4, " Sniffs folder created ")
         except FileExistsError:
-            print("Directory ", dirName4, " Sniffs folder  already exists")
+            print("Directory ", dirName4, " Sniffs folder already exists")
 
         print("start new sniffing session...")
         # params
@@ -296,7 +297,6 @@ class visitclass:
             print("Complete Statistics", completeStats)
 
             # logs about TOR
-            CircuitID = torinfo.get_current_circuit()
             EntryNodeName = EntryNode[1]
             EntryIP = EntryNode[2]
 
@@ -305,14 +305,6 @@ class visitclass:
 
             ExitNodeName = ExitNode[1]
             ExitIP = ExitNode[2]
-            with open(rf"./LOGS/{domain}/{hashname}_torlogs_{CircuitID}.txt", "w") as fileToWriteforTor:
-                fileToWriteforTor.write(rf"Circuit ID:{CircuitID}" + '\n')
-                fileToWriteforTor.write(rf"Entry Node: {EntryNodeName}" + '\n')
-                fileToWriteforTor.write(rf"Entry IP: {EntryIP}" + '\n')
-                fileToWriteforTor.write(rf"Middle Node: {MiddleNodeName}" + '\n')
-                fileToWriteforTor.write(rf"Exit IP: {MiddleIP}" + '\n')
-                fileToWriteforTor.write(rf"Exit Node: {ExitNodeName}" + '\n')
-                fileToWriteforTor.write(rf"Exit IP: {ExitIP}" + '\n')
             # insert tor logs in the database
             cursorfortorlogs = self.conn.cursor()
             inserttorlog = """INSERT INTO torlogs (id_subpage,url,circuit_id,entry_node,entry_node_ip,middle_node,middle_node_ip,exit_node,exit_node_ip) 
@@ -331,7 +323,7 @@ class visitclass:
                 # Rolling back in case of error
                 print("fail at saving at db the tor log", err)
                 # self.conn.rollback()
-                rf"./LOGS/{domain}/{hashname}/SNIFFS/{hashname}_pkts_{CircuitID}.zip"
+                rf"./LOGS/{domain}/{hashname}/SNIFFS/{hashname}_pkts_{CircuitId}.zip"
             # end logs about TOR
 
             # SAVING TIME LOGS
@@ -352,7 +344,7 @@ class visitclass:
                 # Rolling back in case of error
                 print("fail at saving at db the time log", err)
                 # self.conn.rollback()
-                os.remove(rf"./LOGS/{domain}/{hashname}/SNIFFS/{hashname}_pkts_{CircuitID}.zip")
+                os.remove(rf"./LOGS/{domain}/{hashname}/SNIFFS/{hashname}_pkts_{CircuitId}.zip")
 
 
             hasloaded = 1
@@ -376,11 +368,12 @@ if __name__ == "__main__":
             objvisitclass = visitclass()
             objvisitclass.foldercreation()
             print("\n Visiting an specific URL..")
+            print(" ** You can find hash of pages in urlhashes.json ** ")
             chosenhash = input("Please enter the hash of the subpage:\n")
             noOfTraces = input("Please enter the number of traces you would like to collect:\n")
             objvisitclass.mainloadfunc(chosenhash, noOfTraces)
-            question = input("Wanna stop? Y/N ")
-            if question == 'y' or 'Y':
+            question = input("Wanna stop? Y/N ")        # if execution time is too long, cpu problem
+            if question == 'y' or question == 'Y':      # thus give user option to stop or not
                 print('Stop execution. ')
                 break
             elif question == 'n' or question == 'N':
@@ -392,6 +385,20 @@ if __name__ == "__main__":
             print('Error \n', TimeoutException)
 
 
+
+
+
     # from 'Calling function again...', can i get only refhash? >> yes.
     # noOrTraces = 15 - len(newapproach)
     # or just get 15 traces again? (due to errors)
+
+
+    # 29061693d4a48f6bf021268185c4fcb6 << 15
+    # 5bc353ffa805b852dd6e916e468bad24 << 15
+    # da42b532df3a6cd326a456b5b36afc08 << 15
+    # 8c5805a2d236085d291dda06cd0ba84b << 15
+    # ca91ec35e3228df61dc1635300dc7366 << 15
+    # 08017fcc0a6db1fccca47781ea61a61c << 신기루인가 캡쳐해도 자꾸 사라짐
+    # 0a2ee19df701242e0f7b81b56d0dc0e1 < 5 << 신기루냐고 왜 계속 12개냐고
+    # c2bbd65d1d2720699285616a0818966f << 15
+
