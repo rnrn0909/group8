@@ -352,7 +352,7 @@ class detection:
                         noOfTraces = int(min) - len(newapproach)
                         print('The number of trace that you will collect from now ', noOfTraces)
                         print("Calling crawling function again...\n")
-                        self.call_again(refhash, noOrTraces)
+                        self.call_again(refhash, noOfTraces)
                         filelist.append(rf'all{reference}traces_{refhash}')  # to read it again later
                         print("### Go back to read reference file ###")
                         continue
