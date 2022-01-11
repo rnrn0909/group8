@@ -7,7 +7,7 @@ import shutil
 import scipy.stats as stats
 import happening
 import autocollecting
-
+import mergetraces
 
 def findfile():
     filelist = []
@@ -180,10 +180,12 @@ class detection:
         return approach3
 
     def call_again(self, hash, nr):     # crawling, collecting, merging
-        print("****** This work can take some minutes ******")
+        print("\n****** This work can take some minutes ******")
         calling = happening.visitclass()
+        calling.foldercreation()
         calling.mainloadfunc(hash, nr)
         autocollecting.main(hash)
+        mergetraces.main(hash)
 
     def ref(self, userchoice, min, approach):
         filelist = findfile()
@@ -368,6 +370,8 @@ class detection:
                         print('The number of trace that you will collect from now ', noOfTraces)
                         self.call_again(refhash, noOfTraces)
                         filelist.append(rf'all{reference}traces_{refhash}')  # to read it again later
+                        # newlist.append(filename)
+                        # if len(newlist) > 0: read again
                         print("### Go back to read reference file ###")
                         continue
                         # if os.path.exists(rf'./outlierfree/OLFree{reference}traces_{refhash}'):
