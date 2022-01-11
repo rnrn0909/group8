@@ -1,13 +1,10 @@
 import shutil
 import zipfile
 import pyshark
-import asyncio
 import os
 import json
 import glob
 from mysql.connector import (connection)
-import mysql.connector
-import mergetraces
 import time
 
 conn = connection.MySQLConnection(user='root', password='root', port="3306",
@@ -29,10 +26,13 @@ def getpageurl(urlhash):
 def cleanunzipped():
     for dirname, dirnames, filenames in os.walk('./LOGS'):
         for subdirname in dirnames:
-            print(os.path.join(dirname, subdirname))
             path = os.path.join(dirname, subdirname)
             if subdirname == "LOGS":
-                shutil.rmtree(path)
+                try:
+                    shutil.rmtree(path)
+                except OSError as e:
+                    print('Error. ', e)
+            return True
 
 def tlscollection(refhash):
     StartTime = ""
@@ -312,24 +312,17 @@ def torcellcollection(refhash):
 
 
 def verification():
-
     with open('./LOGS/brokenpages.txt') as file:
         lines = file.readlines()
         lines = [line.rstrip() for line in lines]
-
     print(lines)
 
     for line in lines:
-
         filestodelete = glob.glob(rf"./TRACES/*{line}.txt")
         print("URLs files to delete", filestodelete)
-
         for fname in filestodelete:
-
             file_path = fname
-
             try:
-
                 os.remove(file_path)
             except OSError as e:
                 print("Error: %s : %s" % (file_path, e.strerror))
@@ -341,8 +334,6 @@ def main(chosenhash):
     tlscollection(chosenhash)
     time.sleep(1)
     tcpcollection(chosenhash)
-    time.sleep(1)
-    mergetraces.main(chosenhash)
 
 
 if __name__ == '__main__':
