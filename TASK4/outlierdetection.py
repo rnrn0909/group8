@@ -1,13 +1,12 @@
-import re
+import re                           # regex
 import numpy as np
-import json
 import os
-import statistics
-import shutil
-import scipy.stats as stats
-import happening
-import autocollecting
-import mergetraces
+import statistics                   # compute statistics
+import shutil                       # copy file
+import scipy.stats as stats         # Z score
+import happening                    # capture traffic
+import autocollecting               # collect traces
+import mergetraces                  # merge into one file
 
 def findfile():
     filelist = []
