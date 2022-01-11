@@ -10,6 +10,7 @@ def main(chosenhash):
     files=glob.glob(rf"./TRACES/TCP_{chosenhash}*")
     if len(files) != 0:
         print("URLs files to merge", files)
+        print("Merged ", len(files), 'files. ')
         with open(rf'./alltraces/allTCPtraces_{chosenhash}', 'w') as outfile:
             for fname in files:
                 with open(fname) as infile:
@@ -21,6 +22,8 @@ def main(chosenhash):
     files = glob.glob(rf"./TRACES/TOR_{chosenhash}*")
     if len(files) != 0:
         print("URLs files to merge", files)
+        print("Merged ", len(files), 'files. ')
+
         with open(rf'./alltraces/allTORtraces_{chosenhash}', 'w') as outfile:
             for fname in files:
                 with open(fname) as infile:
@@ -32,6 +35,7 @@ def main(chosenhash):
     files = glob.glob(rf"./TRACES/TLS_{chosenhash}*")
     if len(files) != 0:
         print("URLs files to merge", files)
+        print("Merged ", len(files), 'files. ')
         with open(rf'./alltraces/allTLStraces_{chosenhash}', 'w') as outfile:
             for fname in files:
                 with open(fname) as infile:
