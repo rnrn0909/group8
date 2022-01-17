@@ -57,7 +57,7 @@ def main():
                         # ** Since (personally) using 2.7 and 3.8 versions, had to fix it 'python3' but if someone is
                         # using only one version of Python, don't need to use like this **
 
-                        #ask the user to put the valid keyword
+                        # ask the user to put the valid keyword
                         else:
                             print("Please enter valid keyword!")
                             print("\n[ KEYWORD ]\n\ttrends : Collect trending search keywords in Google Trends from various countries")
