@@ -1092,6 +1092,13 @@ if __name__ == '__main__':
                     idxip, maxdata = max_data_ip(newtrace)
                     featuredata.update({'MOST_SENT_BYTES_IP': idxip})
                     featuredata.update({'SENT_BYTES_BY_IP': maxdata})
+                    # -------------------------------------------------------------#
+                    featuredata.update({'TCP_MEAN': tcpmean})
+                    featuredata.update({'TCP_STD': tcpstd})
+                    featuredata.update({'TCP_MAX': tcpmax})
+                    featuredata.update({'TLS_MEAN': tlsmean})
+                    featuredata.update({'TLS_STD': tlsstd})
+                    featuredata.update({'TLS_MAX': tlsmax})
                     print("")
                     # save data from each trace
                     df = pd.DataFrame(featuredata, index=[0])
