@@ -457,7 +457,7 @@ def findip(newtrace):
     for j in range(len(newtrace)):
         if 'Source' in newtrace[j]:
             srclist.append(str(newtrace[j + 2]).split('--')[0])         # list of src ip
-            dstlist.append(str(newtrace[j + 4]).strip('--'))            # list of dst ip
+            dstlist.append(str(newtrace[j + 4]).split('--')[0])         # list of dst ip
     return srclist, dstlist
 
 def dominatingip(list, ulist):
@@ -573,8 +573,8 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
         oIndex, oPercent = sizepercentage(ototalsize, ounq)     # ownfeature3
         if len(ototalsize) > 1:
             imeansize = 'None'
-            imin = itotalsize
-            imaxsize = itotalsize
+            imin = isize
+            imaxsize = isize
             istdsize = 'None'
             omeansize = statistics.mean(ototalsize)
             iIndex = 'None'
@@ -776,7 +776,7 @@ def max_data_ip(newtrace):              # the ip who sent most bytes
                 return iplist[w], maxdata
     else:
         print(f'There is {len(sizelist)} value for bytes. We cannot find max_data_ip. ')
-        return None, None
+        return 'None', 'None'               # string should be returned always (to save in csv)
 
 
 def ofunc3(hash):       # samplecode rdd.py
