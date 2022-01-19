@@ -44,7 +44,14 @@
 - [shutil]
 - [scipy.stats]
 
+### Task 5
+- Implement Classifiers(k-means clustering/Random Forest/k-NN) with k-fold cross validation
+- k-fold cross validation divides dataset into training- and test set. 
+- Closed-world Evaluation executing two experiments
+- Feature importance and Analysis of Prediction Errors
 
+### Util
+- [sklearn]
 
 # Further requirements
 - Uploaded requirements in text file
