@@ -432,7 +432,7 @@ def sizepercentage(list, ulist):        # to get percentage of each unique value
             if ulist[v] == size1:
                 present = '%.3f' % (value * 100 / len(list))
                 # print(f'{size1}: {present}%')
-                pc.append(f'{size1}: {present}%')
+                pc.append(f'{size1}: {present}')
     if len(pc) != 0:
         comparison = []
         for percent in pc:
@@ -468,7 +468,7 @@ def dominatingip(list, ulist):
             if ulist[v] == ip:
                 present = '%.3f' % (value * 100 / len(list))
                 # print(f'{size1}: {present}%')
-                pcent.append(f'{ip}: {present}%')
+                pcent.append(f'{ip}: {present}')
 
     if len(pcent) != 0:
         comparison = []
