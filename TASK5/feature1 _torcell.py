@@ -106,18 +106,18 @@ def funcB(newtrace):                                            # packet orderin
         print('INCOMING STD:', binstd)
         binav = sum(inorderinglist) / len(inorderinglist)
         print('INCOMING AVERAGE:', binav)
-        boutstd = 'None'
+        boutstd = 0
         print('OUTGOING STD:', boutstd)
-        boutav = 'None'
+        boutav = 0
         print('OUTGOING AVERAGE:', boutav)
         print(
             rf'There is {len(outorderinglist)} for order of successive OUTGOING packets. We cannot get statistic values. ')
         return binstd, binav, boutstd, boutav
 
     elif len(inorderinglist) <= 1 and len(outorderinglist) > 1:
-        binstd = 'None'
+        binstd = 0
         print('INCOMING STD:', binstd)
-        binav = 'None'
+        binav = 0
         print('INCOMING AVERAGE:', binav)
         boutstd = statistics.stdev(outorderinglist)
         print('OUTGOING STD:', boutstd)
@@ -129,10 +129,10 @@ def funcB(newtrace):                                            # packet orderin
     else:
         print(
             rf'Since there is {len(inorderinglist)} and {len(outorderinglist)}, we cannot compute statistical values.')
-        binstd = 'None'
-        binav = 'None'
-        boutstd = 'None'
-        boutav = 'None'
+        binstd = 0
+        binav = 0
+        boutstd = 0
+        boutav = 0
         return binstd, binav, boutstd, boutav
 
 def incomingtime(newtrace):
@@ -193,14 +193,14 @@ def funcG(newtrace):                                    # transmission time
 
     else:
         print('Not available to compute statistical values. There are only ', len(intimelist), len(outtimelist))
-        iq1 = 'None'
-        iq2 = 'None'
-        iq3 = 'None'
-        oq1 = 'None'
-        oq2 = 'None'
-        oq3 = 'None'
-        intotaltime = 'None'
-        outtotaltime = 'None'
+        iq1 = 0
+        iq2 = 0
+        iq3 = 0
+        oq1 = 0
+        oq2 = 0
+        oq3 = 0
+        intotaltime = 0
+        outtotaltime = 0
         return iq1, iq2, iq3, oq1, oq2, oq3, intotaltime, outtotaltime
 
 def chunk(lst, n):
@@ -249,10 +249,10 @@ def funcC(newtrace):                                            # concentration 
         return stdlipkt, meanlipkt, medianlipkt, maxlipkt
     else:
         print(rf'Since there is {len(twenty)}, we cannot compute statistical values from chunk. ')
-        stdlipkt = 'None'
-        meanlipkt = 'None'
-        medianlipkt = 'None'
-        maxlipkt = 'None'
+        stdlipkt = 0
+        meanlipkt = 0
+        medianlipkt = 0
+        maxlipkt = 0
         return stdlipkt, meanlipkt, medianlipkt, maxlipkt
 
 def funcD(newtrace):                                    # concentration in first & last 30 packets
@@ -382,19 +382,19 @@ def funcF(newtrace):                                # packet inter-arrival
         print('INCOMING STD:', ininterstd)
         ininterq3 = np.percentile(inintertime, 75)
         print('INCOMING 3rd QUARTILE:', ininterq3)
-        outintermax = 'None'
-        outintermean = 'None'
-        outinterstd = 'None'
-        outinterq3 = 'None'
+        outintermax = 0
+        outintermean = 0
+        outinterstd = 0
+        outinterq3 = 0
         print(rf'There is {len(outintertime)} of inter-arrival time value. We cannot compute statistical values. ')
         return inintermax, inintermean, ininterstd, ininterq3, outintermax, outintermean, outinterstd, outinterq3
 
 
     elif len(inintertime) <= 1 and len(outintertime) > 1:
-        inintermax = 'None'
-        inintermean = 'None'
-        ininterstd = 'None'
-        ininterq3 = 'None'
+        inintermax = 0
+        inintermean = 0
+        ininterstd = 0
+        ininterq3 = 0
         outintermax = max(outintertime)
         print('OUTGOING MAX:' + str(outintermax))
         outintermean = statistics.mean(outintertime)
@@ -408,14 +408,14 @@ def funcF(newtrace):                                # packet inter-arrival
             rf'There is {len(inintertime)} of inter-arrival time value. We cannot compute statistical values. ')
         return inintermax, inintermean, ininterstd, ininterq3, outintermax, outintermean, outinterstd, outinterq3
     else:
-        inintermax = 'None'
-        inintermean = 'None'
-        ininterstd = 'None'
-        ininterq3 = 'None'
-        outintermax = 'None'
-        outintermean = 'None'
-        outinterstd = 'None'
-        outinterq3 = 'None'
+        inintermax = 0
+        inintermean = 0
+        ininterstd = 0
+        ininterq3 = 0
+        outintermax = 0
+        outintermean = 0
+        outinterstd = 0
+        outinterq3 = 0
         print(rf'There is {len(inintertime)} and {len(outintertime)} of inter-arrival time value. We cannot compute statistical values. ')
         return inintermax, inintermean, ininterstd, ininterq3, outintermax, outintermean, outinterstd, outinterq3
 
@@ -446,8 +446,8 @@ def sizepercentage(list, ulist):        # to get percentage of each unique value
                 return index, maxpercent
     else:
         print('There is not enough data to get unique size of packet. ')
-        index = 'None'
-        maxpercent = 'None'
+        index = 0
+        maxpercent = 0
         return index, maxpercent
 
 
@@ -483,8 +483,8 @@ def dominatingip(list, ulist):
                 return index, maxIPpercent
     else:
         print('There is not enough data to get unique IP address of packet. ')
-        index = 'None'
-        maxIPpercent = 'None'
+        index = 0
+        maxIPpercent = 0
         return index, maxIPpercent
 
 def ofunc2(newtrace):                   # the ip seen in the trace most often
@@ -572,13 +572,13 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
         ounq = uniquevalue(ototalsize)
         oIndex, oPercent = sizepercentage(ototalsize, ounq)     # ownfeature3
         if len(ototalsize) > 1:
-            imeansize = 'None'
+            imeansize = 0
             imin = isize
             imaxsize = isize
-            istdsize = 'None'
+            istdsize = 0
             omeansize = statistics.mean(ototalsize)
-            iIndex = 'None'
-            iPercent = 'None'
+            iIndex = 0
+            iPercent = 0
             print('OUTGOING MEAN:', omeansize)
             omaxsize = max(ototalsize)
             print('OUTGOING MAX:', omaxsize)
@@ -591,18 +591,18 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
 
         else:       # if len(ototalsize) == 1
             print(rf'There is only {len(ototalsize)} OUTGOING bytes. We cannot compute statistical values. ')
-            imeansize = 'None'
+            imeansize = 0
             imin = isize
             imaxsize = isize
-            istdsize = 'None'
-            iIndex = 'None'
-            iPercent = 'None'
+            istdsize = 0
+            iIndex = 0
+            iPercent = 0
             omin = osize
-            omeansize = 'None'
+            omeansize = 0
             omaxsize = osize
-            ostdsize = 'None'
-            oIndex = 'None'
-            oPercent = 'None'
+            ostdsize = 0
+            oIndex = 0
+            oPercent = 0
             return imeansize, imin, imaxsize, istdsize, omin, omeansize, omaxsize, ostdsize, isize, osize, iIndex, iPercent, oIndex, oPercent
     elif isize != 0 and osize == 0:
         print('No OUTGOING bytes. ')
@@ -618,27 +618,27 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
             istdsize = statistics.stdev(itotalsize)
             print('INCOMING STD:', istdsize)
             omin = osize
-            omeansize = 'None'
+            omeansize = 0
             omaxsize = osize
-            ostdsize = 'None'
-            oIndex = 'None'
-            oPercent = 'None'
+            ostdsize = 0
+            oIndex = 0
+            oPercent = 0
             return imeansize, imin, imaxsize, istdsize, omin, omeansize, omaxsize, ostdsize, isize, osize, iIndex, iPercent, oIndex, oPercent
 
         else:   # len(itotalsize) == 1
             print(rf'There is only {len(itotalsize)} OUTGOING bytes. We cannot compute statistical values. ')
-            imeansize = 'None'
+            imeansize = 0
             imin = isize
             imaxsize = isize
-            istdsize = 'None'
-            iIndex = 'None'
-            iPercent = 'None'
+            istdsize = 0
+            iIndex = 0
+            iPercent = 0
             omin = osize
-            omeansize = 'None'
+            omeansize = 0
             omaxsize = osize
-            ostdsize = 'None'
-            oIndex = 'None'
-            oPercent = 'None'
+            ostdsize = 0
+            oIndex = 0
+            oPercent = 0
             return imeansize, imin, imaxsize, istdsize, omin, omeansize, omaxsize, ostdsize, isize, osize, iIndex, iPercent, oIndex, oPercent
 
 
@@ -675,26 +675,26 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
             print('INCOMING MAX:', imaxsize)
             istdsize = statistics.stdev(itotalsize)
             print('INCOMING STD:', istdsize)
-            omeansize = 'None'
+            omeansize = 0
             print('OUTGOING MEAN:', omeansize)
             omin = ototalsize
             print('OUTGOING MIN:',omin)
             omaxsize = ototalsize
             print('OUTGOING MAX:', omaxsize)
-            ostdsize = 'None'
+            ostdsize = 0
             print('OUTGOING STD:', ostdsize)
             print(rf'There is {len(ototalsize)} of outgoing bytes. We cannot compute statistical values. ')
             print('Instead of finding max, min value of outgoing bytes, use the original value. ')
             return imeansize, imin, imaxsize, istdsize, omeansize, omin, omaxsize, ostdsize, isize, osize, iIndex, iPercent, oIndex, oPercent
 
         elif len(itotalsize) <= 1 and len(ototalsize) > 1:
-            imeansize = 'None'
+            imeansize = 0
             print('INCOMING MEAN:', imeansize)
             imin = itotalsize
             print('INCOMING MIN:', imin)
             imaxsize = itotalsize
             print('INCOMING MAX:', imaxsize)
-            istdsize = 'None'
+            istdsize = 0
             print('INCOMING STD:', istdsize)
             omeansize = statistics.mean(ototalsize)
             print('OUTGOING MEAN:', omeansize)
@@ -711,14 +711,14 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
         else:
             print(rf'There is only {len(itotalsize)} of incoming and {len(ototalsize)} of outgoing bytes.')
             print('We cannot compute statistical values. ')
-            imeansize = 'None'
-            imin = 'None'
-            imaxsize = 'None'
-            istdsize = 'None'
-            omeansize = 'None'
-            omin = 'None'
-            omaxsize = 'None'
-            ostdsize = 'None'
+            imeansize = 0
+            imin = 0
+            imaxsize = 0
+            istdsize = 0
+            omeansize = 0
+            omin = 0
+            omaxsize = 0
+            ostdsize = 0
             return imeansize, imin, imaxsize, istdsize, omeansize, omin, omaxsize, ostdsize, isize, osize, iIndex, iPercent, oIndex, oPercent
 
 
@@ -776,7 +776,7 @@ def max_data_ip(newtrace):              # the ip who sent most bytes
                 return iplist[w], maxdata
     else:
         print(f'There is {len(sizelist)} value for bytes. We cannot find max_data_ip. ')
-        return 'None', 'None'               # string should be returned always (to save in csv)
+        return 0, 0          # string should be returned always (to save in csv)
 
 
 def ofunc3(hash):       # samplecode rdd.py
@@ -841,9 +841,9 @@ def ofunc3(hash):       # samplecode rdd.py
 
         else:
             print('There is not enough trace in the file. ')
-            tcpmean = 'None'
-            tcpstd = 'None'
-            tcpmax = 'None'
+            tcpmean = 0
+            tcpstd = 0
+            tcpmax = 0
 
     ### 근데 이미 각 트레이스 별 총 패킷 합을 구하는데 프로토콜 별 통계값을 갖는게 의미가 있나? 중복처럼 보임
 
@@ -905,9 +905,9 @@ def ofunc3(hash):       # samplecode rdd.py
 
         else:
             print('There is not enough trace in the file. ')
-            tlsmean = 'None'
-            tlsstd = 'None'
-            tlsmax = 'None'
+            tlsmean = 0
+            tlsstd = 0
+            tlsmax = 0
     return tcpmean, tcpstd, tcpmax, tlsmean, tlsstd, tlsmax
 
 
@@ -933,7 +933,7 @@ def funcE(tempocountlist):
         return Emean, Estd, Emedian, Emin, Emax
     else:
         print('There is only', uniqcount, 'value. Not able to compute. ')
-        return 'None', 'None', 'None', 'None', 'None'
+        return 0, 0, 0, 0, 0
 
 
 
