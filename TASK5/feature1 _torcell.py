@@ -509,58 +509,72 @@ def ofunc1(newtrace):       # totalbytes / mean, max, std of incoming/outgoing p
     osize = 0
     for j in range(len(newtrace)):
         if 'INCOMING' in newtrace[j] and 'Source' not in newtrace[j]:
-            isize = str(newtrace[j + 6]).strip(',')
-            if 'Timestamp' in isize:  # XXXTimestamp
-                isize = isize.split(':')[1][:-9]
-                itotalsize.append(int(isize))
-            elif 'URL' in isize:  # XXXURL
-                isize = isize.split(':')[1][:-3]
-                itotalsize.append(int(isize))
-            elif 'size' in isize:  # size:XXX, or size:XXX
-                isize = isize.split(':')[1]
-                itotalsize.append(int(isize))
+            insize = str(newtrace[j + 6]).strip(',')
+            if 'Timestamp' in insize:  # XXXTimestamp
+                insize = insize.split(':')[1][:-9]
+                itotalsize.append(int(insize))
+                isize += int(insize)
+            elif 'URL' in insize:  # XXXURL
+                insize = insize.split(':')[1][:-3]
+                itotalsize.append(int(insize))
+                isize += int(insize)
+            elif 'size' in insize:  # size:XXX, or size:XXX
+                insize = insize.split(':')[1]
+                itotalsize.append(int(insize))
+                isize += int(insize)
             else:
                 pass
 
         elif 'INCOMING' in newtrace[j] and 'Source' in newtrace[j]:
-            isize = str(newtrace[j + 5]).strip(',')
-            if 'Timestamp' in isize:
-                isize = isize.split(':')[1][:-9]
-                itotalsize.append(int(isize))
-            elif 'URL' in isize:
-                isize = isize.split(':')[1][:-3]
-                itotalsize.append(int(isize))
-            elif 'size' in isize:
-                isize = isize.split(':')[1]
-                itotalsize.append(int(isize))
+            insize = str(newtrace[j + 5]).strip(',')
+            if 'Timestamp' in insize:
+                insize = insize.split(':')[1][:-9]
+                itotalsize.append(int(insize))
+                isize += int(insize)
+            elif 'URL' in insize:
+                insize = insize.split(':')[1][:-3]
+                itotalsize.append(int(insize))
+                isize += int(insize)
+            elif 'size' in insize:
+                insize = insize.split(':')[1]
+                itotalsize.append(int(insize))
+                isize += int(insize)
             else:
-                itotalsize.append(int(isize))
+                itotalsize.append(int(insize))
+                isize += insize
         elif 'OUTGOING' in newtrace[j] and 'Source' not in newtrace[j]:
-            osize = str(newtrace[j + 6]).strip(',')
-            if 'Timestamp' in osize:  # XXXTimestamp
-                osize = osize.split(':')[1][:-9]
-                ototalsize.append(int(osize))
-            elif 'URL' in osize:  # XXXURL
-                osize = osize.split(':')[1][:-3]
-                ototalsize.append(int(osize))
-            elif 'size' in osize:  # size:XXX, or size:XXX
-                osize = osize.split(':')[1]
-                ototalsize.append(int(osize))
+            outsize = str(newtrace[j + 6]).strip(',')
+            if 'Timestamp' in outsize:  # XXXTimestamp
+                outsize = outsize.split(':')[1][:-9]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
+            elif 'URL' in outsize:  # XXXURL
+                outsize = outsize.split(':')[1][:-3]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
+            elif 'size' in outsize:  # size:XXX, or size:XXX
+                outsize = outsize.split(':')[1]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
             else:
                 pass
         elif 'OUTGOING' in newtrace[j] and 'Source' in newtrace[j]:
-            osize = str(newtrace[j + 5]).strip(',')
-            if 'Timestamp' in osize:  # XXXTimestamp
-                osize = osize.split(':')[1][:-9]
-                ototalsize.append(int(osize))
-            elif 'URL' in osize:  # XXXURL
-                osize = osize.split(':')[1][:-3]
-                ototalsize.append(int(osize))
-            elif 'size' in osize:  # size:XXX, or size:XXX
-                osize = osize.split(':')[1]
-                ototalsize.append(int(osize))
+            outsize = str(newtrace[j + 5]).strip(',')
+            if 'Timestamp' in outsize:  # XXXTimestamp
+                outsize = outsize.split(':')[1][:-9]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
+            elif 'URL' in outsize:  # XXXURL
+                outsize = outsize.split(':')[1][:-3]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
+            elif 'size' in outsize:  # size:XXX, or size:XXX
+                outsize = outsize.split(':')[1]
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
             else:
-                ototalsize.append(int(osize))
+                ototalsize.append(int(outsize))
+                osize += int(outsize)
 
         else:
             pass
