@@ -99,7 +99,7 @@ def main():
 
     filelist = featurelist()
     datalist = []
-    target_label = []
+    # target_label = []
     print(' Start to read csv files... ')
     print(' This work can take a few seconds. \n')
     for file in filelist:
@@ -177,7 +177,6 @@ def main():
 
 
 if __name__ == "__main__":
-
     main()
 
 
