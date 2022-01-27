@@ -46,12 +46,14 @@
 
 ### Task 5
 - Implement Classifiers(k-means clustering/Random Forest/k-NN) with k-fold cross validation
-- k-fold cross validation divides dataset into training- and test set. 
-- Closed-world Evaluation executing two experiments
+- k-fold cross validation should be applied 40 times(the number of subpages for each main page)
+- Closed-world Evaluation by executing two experiments with optimal parameters
 - Feature importance and Analysis of Prediction Errors
 
 ### Util
 - [sklearn]
+- [glob]
+- [urllib]
 
 # Further requirements
 - Uploaded requirements in text file
