@@ -42,27 +42,30 @@ def hundreddomain():
                                       host='127.0.0.1',
                                       database='webprintdb', auth_plugin='mysql_native_password')
 
-    query = """SELECT url FROM websites"""
+    query = """SELECT id_mainpage, url FROM websites"""
     cursor = conn.cursor()
     cursor.execute(query)
-    for url in cursor:
-        validurl.append(urlparse(url[0]).netloc)
+    for id_mainpage, url in cursor:
+        validurl.append(id_mainpage)  # use id_mainpage as label/index of array
+        validurl.append(urlparse(url).netloc)
     conn.close()
+    validurl = np.array(validurl)
+    validurl = np.reshape(validurl, (len(validurl) // 2, 2))
     return validurl
 
 def create_label():
     target_label = []
     validurl = hundreddomain()
     filelist = featurelist()
-    for x in range(len(filelist)):
-        data = geturlhash()
-        filehash = filelist[x].split('_')[2]
-        for url, savedhash in data.items():
+    urldata = geturlhash()
+    for file in filelist:
+        filehash = file.split('_')[2]
+        for url, savedhash in urldata.items():
             if filehash == savedhash:
                 domain = urlparse(url).netloc
                 for y in range(len(validurl)):
-                    if domain == validurl[y]:
-                        target_label.append(y)
+                    if domain == validurl[y][1]:
+                        target_label.append(validurl[y][0])
                     else:
                         pass
     return target_label
@@ -158,28 +161,26 @@ def main():
     clf.fit(x_train, y_train)
     kf = RepeatedKFold(n_splits=int(nrtofold), n_repeats=40, random_state=1)
     score = cross_val_score(clf, x_train, y_train, cv=kf, scoring="accuracy")
-    print('Score:', '%.3f' % score.mean())
+    print('CV Score:', '%.3f' % score.mean())
     y_pred = clf.predict(x_test)
     # print('Accuracy :', metrics.accuracy_score(y_test, y_pred))
     print(classification_report(y_test, y_pred))            # to show values in text
     #------------------------------------------------------------------------------------------------------------------#
     feature_scores = pd.Series(clf.feature_importances_, index=col_list).sort_values(ascending=False)
-    print('10 most important features')
-    print(feature_scores[:10])      # top 10 important features
+    print('Feature Importance Scores: ')
+    print(feature_scores)
     datalist = np.array(datalist)
     n_feature = datalist.shape[1]       # number of feature := len(element_col)
     plt.figure(figsize=(40, 40))
     plt.barh(col_list, clf.feature_importances_, align='center')
     plt.ylim(-1, n_feature)
-    plt.xlabel('feature importance', size=11)
-    plt.ylabel('feature', size=11)
+    plt.xlabel('Feature importance score', size=11)
+    plt.ylabel('Feature', size=11)
     plt.show()
 
 
 if __name__ == "__main__":
     main()
-
-
 
 
 # https://alex-blog.tistory.com/entry/Machine-Learning-Random-Forest-%EB%9E%9C%EB%8D%A4-%ED%8F%AC%EB%A0%88%EC%8A%A4%ED%8A%B8-%EC%98%88%EC%8B%9C-feat-python
